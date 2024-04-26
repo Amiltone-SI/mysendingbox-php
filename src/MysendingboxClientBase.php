@@ -24,14 +24,14 @@ abstract class MysendingboxClientBase
     protected ?Client $client = null;
     private string $apiKey;
     private ?string $version = null;
-    private string $apiUrl = 'https://api.mysendingbox.com/';
+    private string $apiUrl = 'https://api.mysendingbox.fr/';
     private int $timeout = 60;
     private bool $verifySsl = true;
 
     public function __construct(
         string $apiKey,
         ?string $version = null,
-        string $apiUrl = 'https://api.mysendingbox.com/',
+        string $apiUrl = 'https://api.mysendingbox.fr/',
         int $timeout = 60,
         bool $verifySsl = true
     ) {
