@@ -230,7 +230,7 @@ $to_address = new AddressElectronic(
 The function to implement for sending electronic letters is **createElectronicLetter()**
 __The first 4 arguments are required__
 
-``php
+```php
 // public function createElectronicLetter(
 //     AddressElectronic $to,
 //     string $postageType,
