@@ -7,12 +7,20 @@ MySendingBox.fr PHP Client is a simple but flexible wrapper for the [MySendingBo
 ## Table of Contents
 
 - [Getting Started](#getting-started)
-  - [Registration](#registration)
-  - [Installation](#installation)
-  - [Usage](#usage)
+- [Registration](#registration)
+- [Installation](#installation)
+- [Usage](#usage)
   - [Letters](#letters)
-  - [Accounts](#accounts)
+    - [Create a new Letter](#create-a-new-paper-letter)
+    - [Create a new Electronic Letter](#create-a-new-electronic-letter)
+    - [Get a specific Letter](#get-a-specific-letter)
+    - [Get all Letters](#get-all-letters)
   - [Invoices](#invoices)
+    - [Get all Invoices](#get-all-invoices)
+    - [Get a specific Invoice](#get-a-specific-invoice)
+  - [Accounts](#accounts)
+    - [Create an Account](#create-an-account)
+    - [Update an account](#update-an-account)
 - [Examples](#examples)
 
 ## Getting Started
@@ -296,7 +304,7 @@ print_r($letter);
 ?>
 ```
 
-#### Get a specific letter
+#### Get a specific Letter
 
 You can use **getLetter()** function, wich require the id of the letter to retrieve (both paper and electronic)
 
@@ -315,3 +323,176 @@ print_r($letter);
 
 ?>
 ```
+
+#### Get all Letters
+
+To retrieve all letters (both electronic and paper format) , you can use the __getAllLetters()__ function. You can provide an associative array with relevant arguments for your search, such as *offset, limit, channel,metadata,variables,created_at,updtated_at,send_date,mode,postage_type,postage_type,postage_speed, color,* etc. You can see documentation for more infos.
+
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+use Mysendingbox\MysendingboxClient;
+
+$mysendingbox = new MysendingboxClient(API_KEY);//change with your API keys
+
+$letters = $mysendingbox->getAllLetters(['limit' => 25]);
+
+echo ('<pre>');
+print_r($letters);
+echo ('</pre>');
+?>
+```
+### Invoices
+
+#### Get an Invoice
+
+You can use **getInvoice()** wich require the ID of the invoice to retrieve
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+use Mysendingbox\MysendingboxClient;
+
+$mysendingbox = new MysendingboxClient(API_KEY);
+
+$invoiceId = 'INVOICE_ID'; // Replace 'INVOICE_ID' with the ID of the invoice you want to retrieve
+
+$invoice = $mysendingbox->getInvoice($invoiceId);
+
+print_r($invoice);
+
+?>
+```
+
+#### Get all Invoices
+
+The function **getAllInvoices()** is responsible for retrieving all the invoices, you can provide an associative array with the relevant argument to filter your search.(ex: *date_start, date_end, status, order_by, sort_by, page, limit,* see documentation for more infos)
+
+Here is a working example of how to retrieve invoices
+
+```php
+<?php
+require 'vendor/autoload.php';
+require 'config.php';
+
+use Mysendingbox\MysendingboxClient;
+
+$mysendingbox = new MysendingboxClient(API_KEY);
+
+$invoices = $mysendingbox->getAllInvoices(['limit' => 25]);
+
+echo ('<pre>');
+print_r($invoices);
+echo ('</pre>');
+?>
+```
+
+#### Get a specific Invoice
+
+provide the ID of the invoice to **getInvoice()** function to retrieve it 
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+use Mysendingbox\MysendingboxClient;
+
+$mysendingbox = new MysendingboxClient('API_KEY');// Replace with you API keys
+
+$invoiceId = 'INVOICE_ID'; // Replace 'INVOICE_ID' with the ID of the invoice you want to retrieve
+
+$invoice = $mysendingbox->getInvoice($invoiceId);
+
+print_r($invoice);
+
+?>
+```
+
+### Accounts
+
+#### Create an Account
+
+To create an account you can use **createAccount()** function
+__The first 2 arguments are required__
+```php
+// public function createAccount(
+//     string $email,
+//     string $name,
+//     ?string $phone = null,
+//     ?string $webhookUrl = null,
+//     ?string $companyName = null,
+//     ?string $addressLine1 = null,
+//     ?string $addressLine2 = null,
+//     ?string $addressPostalcode = null,
+//     ?string $addressCity = null,
+//     ?string $addressCountry = null,
+//     ?string $siren = null,
+//     ?int $cancellationWindow = null
+// )
+```
+
+Here is a full working example
+```php
+<?php
+require 'vendor/autoload.php';
+
+use Mysendingbox\MysendingboxClient;
+
+$mysendingbox = new MysendingboxClient(API_KEY);//replace 'API_KEY' with your API keys
+
+try {
+    $account_response = $mysendingbox->createAccount(
+        'john.doe@example.com', // $email
+        'John Doe', // $name 
+    );
+    echo '<pre>';
+    var_dump($account_response);
+    echo '</pre>';
+    
+} catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n" , 'Code: ', $e->getCode(), "\n";
+}
+
+?>
+```
+
+#### Update an Account
+
+You can update an email account with the updateAccount() function, it will return true if the account has been updated.
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+use Mysendingbox\MysendingboxClient;
+
+$mysendingbox = new MysendingboxClient('API_KEY'); //replace 'API_KEY' with your API keys
+
+$accountId = 'ACCOUNT_ID'; // Replace 'ACCOUNT_ID' with the ID of the account you want to update
+
+try {
+    $account_response = $mysendingbox->updateAccount( $accountId, 'newEmail@email.com');
+    
+    var_dump($account_response); // the output is a boolean 
+    
+}
+catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n" , 'Code: ', $e->getCode(), "\n";
+}
+
+?>
+```
+
+## Examples
+
+We've provided various examples for you to try out [here](https://github.com/mysendingbox/mysendingbox-php/tree/master/examples).
+
+
+=======================
+
+Copyright &copy; 2017 Mysendingbox.fr
+
+Released under the MIT License, which can be found in the repository in `LICENSE.txt`.
