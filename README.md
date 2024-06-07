@@ -171,7 +171,7 @@ __The first 5 arguments are required__
 // )
  ```
 
-You can freely use the values or constants provided by the application in the MysendingboxCleint class.
+You can freely use the values or constants provided by the application in the MysendingboxClient class.
 
 Here is a complete working example
 ```php
